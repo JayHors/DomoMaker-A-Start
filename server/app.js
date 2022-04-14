@@ -25,10 +25,10 @@ mongoose.connect(dbURI, (err) => {
   }
 });
 
-const redisURL = process.env.REDISCLOUD_URL || 
-  'redis://default:Zv7Afc0jqQ2rfwZMu5b8z344wu1ccAUa@redis-17807.c1.us-east1-2.gce.cloud.redislabs.com:17807';
+const redisURL = process.env.REDISCLOUD_URL
+  || 'redis://default:Zv7Afc0jqQ2rfwZMu5b8z344wu1ccAUa@redis-17807.c1.us-east1-2.gce.cloud.redislabs.com:17807';
 
-let redisClient = redis.createClient({
+const redisClient = redis.createClient({
   legacyMode: true,
   url: redisURL,
 });
@@ -51,9 +51,9 @@ app.use(session({
   secret: 'Domo Arigato',
   resave: true,
   saveUninitialized: true,
-  cookie:{
+  cookie: {
     httpOnly: true,
-  }
+  },
 }));
 app.engine('handlebars', expressHandlebars.engine({ defaultLayout: '' }));
 app.set('view engine', 'handlebars');
@@ -62,8 +62,8 @@ app.use(cookieParser());
 
 app.use(csrf());
 
-app.use((err, req,res,next) =>{
-  if(err.code !== 'EBADCSRFTOKEN') return next(err);
+app.use((err, req, res, next) => {
+  if (err.code !== 'EBADCSRFTOKEN') return next(err);
 
   console.log('Missing CSRF token!');
 
@@ -76,4 +76,3 @@ app.listen(port, (err) => {
   if (err) { throw err; }
   console.log(`Listening on port ${port}`);
 });
-
